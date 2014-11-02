@@ -1,0 +1,25 @@
+﻿.container {
+	margin: 50px auto;
+	width: 400px;
+}
+
+#gameControlles {
+	margin: 15px auto;
+	width: 280px;
+}
+
+#puzzleContainer {
+	width: 400px;
+	height: 400px;
+}
+.puzzle-field {
+	float: left;
+	border: 1px solid;
+	font-size: 28px;
+	text-align: center;
+	box-sizing: border-box;
+}
+
+.puzzle-field.active {
+	background-color: greenyellow;
+}

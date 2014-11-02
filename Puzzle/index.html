@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Puzzle</title>
+    <link href="puzzle.css" rel="stylesheet" />
+    <!--insure that polyfil will be used only in IE8 or less. Poly is not needed in new browser -->
+    <!--[if lt IE 9 ]>
+         <script src="js/poly.min.js"></script>
+    <![endif]-->
+</head>
+    <body>
+        <div class="container">
+            <h3>Order numbers to win the game</h3>
+            <p>Use keyboard arrows to move the filed accroas the board. Selected field is the largest one.</p>
+            <div id="puzzleContainer">
+            </div>
+            <div id="gameControlles">
+                <button onclick="game.start(3)">Start 3*3</button>
+                <button onclick="game.start(4)">Start 4*4</button>
+                <button onclick="game.start(5)">Start 5*5</button>
+                <button onclick="game.start(6)">Start 6*6</button>
+            </div>
+        </div>
+    </body>
+
+    <script src="js/s.min.js"></script>
+    <script src="js/game.js"></script>
+
+    <script>
+        game.start(4);
+
+        //Default victory callback
+        //game.victory(function() {
+        //	alert("OHHH JEEEE");
+        //});
+    </script>
+</html>
