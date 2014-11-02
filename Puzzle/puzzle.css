@@ -12,12 +12,28 @@
 	width: 400px;
 	height: 400px;
 }
+
+.puzzle-field.size3 {
+	line-height: 133px;
+}
+.puzzle-field.size4 {
+	line-height: 100px;
+}
+.puzzle-field.size5 {
+	line-height: 80px;
+}
+.puzzle-field.size6 {
+	line-height: 66px;
+}
+
 .puzzle-field {
 	float: left;
 	border: 1px solid;
 	font-size: 28px;
 	text-align: center;
 	box-sizing: border-box;
+	color: olive;
+	background-color: khaki;
 }
 
 .puzzle-field.active {

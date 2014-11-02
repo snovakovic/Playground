@@ -5,6 +5,7 @@
 var game = (function () {
 	var puzzleContainer = document.getElementById("puzzleContainer"),
 		puzzleFields,
+		size,
 		gameSize,
 		fieldSize, //siez of the filed in % in case of the size 3 it is 33,333%
 		fieldsPerRow,
@@ -20,17 +21,16 @@ var game = (function () {
 			var divClass = val === gameSize ? "puzzle-field active" : "puzzle-field"; //set active to the last in arr
 			var css = s.format("width:{0}; height:{0}", fieldSize);
 
-			fieldsHtml += s.format('<div class="{0}" id="field_{1}" data-index="{1}" onClick="game.click({1})" style="{3}">{2}</div>', divClass, i, val, css);
+			fieldsHtml += s.format('<div class="{0} size{4}" id="field_{1}" data-index="{1}" onClick="game.click({1})" style="{3}">{2}</div>', divClass, i, val, css, size);
 
 		});
 		puzzleContainer.innerHTML = fieldsHtml;
 	};
 
 	var swapFields = function (indexToSwap) {
-		console.log("swapFields");
 		if (!isGameOn) return;
+
 		if (indexToSwap >= 0 && indexToSwap < gameSize) {
-			console.log("swap index ", selectedIndex, "with index ", indexToSwap);
 
 			var temp = puzzleFields[selectedIndex];
 			puzzleFields[selectedIndex] = puzzleFields[indexToSwap];
@@ -106,8 +106,8 @@ var game = (function () {
 			victoryCallback = callback;
 		},
 
-		start: function(size) {
-			size = size || 4; //set default value to 4
+		start: function(_size) {
+			size = _size || 4; //set default value to 4
 
 			if (size < 3 || size > 6)
 				throw new Error("game start >> size must be between 3 and 6");
@@ -116,22 +116,18 @@ var game = (function () {
 
 			var puzzleArr = [];
 			s.iterate(size * size, function(i) {
-				puzzleArr.push(i + 1);
+				puzzleArr[i] = (i + 1);
 			});
 
 			puzzleFields = s.shuffle(puzzleArr);
 			gameSize = puzzleFields.length,
 			selectedIndex = puzzleFields.indexOf(size * size); // index of biggest value in array
-			console.log(selectedIndex);
 			drawBoard();
 			fieldsPerRow = Math.sqrt(gameSize);
 			isGameOn = true;
 			//$("#field_" + selectedIndex).addClass("active");
 		},
 
-		click: function(clickedIndex) {
-			console.log(clickedIndex);
-		}
 	}
 }());
 
