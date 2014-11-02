@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, height=device-height" />
+
+	<title>Tic Tac Ha?</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css"></link>
+	<link rel="stylesheet" href="css/ttt.css"></link>
+</head>
+<body>
+	<div class="ttt-container">
+		<!-- LOGO -->
+		<img src="logo.png" id="ttt-logo" alt="Tic Tac Toe">
+		
+		<!-- START Out of game wrapper -->
+		<section class="ttt-out-of-game ttt-box">
+			<section>
+				<button type="button" id="ttt-new-game-btn" class="btn btn-default btn-block">
+					New game <span class="caret"></span>
+				</button>
+				<div id="ttt-start-game-options" class="slider closed ttt-box-wrapper clearfix">
+					<div class="col-xs-6">
+						<p>Game:</p>
+						<div class="radio">
+						  <label>
+						    <input type="radio" name="gameMode" value="single" data-game-type="single" checked>
+						    One PC
+						  </label>
+						</div>
+						<div class="radio">
+						  <label>
+						    <input type="radio" name="gameMode" value="vs-player" data-game-type="public">
+						    Public
+						  </label>
+						</div>
+						<div class="radio">
+						  <label>
+						    <input type="radio" name="gameMode" value="vs-player" data-game-type="private">
+						    Private
+						  </label>
+						</div>
+					</div>
+
+					<div class="col-xs-6">
+						<p>Board size:</p>
+						<select id="ttt-game-size" class="form-control">
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+							<option value="10">10</option>
+						</select>
+
+						<p>Win streak:</p>
+						<select id="ttt-win-streak" class="form-control col-xs-6" disabled="disabled">
+							<!-- More values will be added based on change in board size -->
+							<option>3</option>
+						</select>
+					</div>
+					<div style="clear:both"></div>
+					<button type="button" id="ttt-start-game-btn" class="btn btn-success btn-block">Start</button>
+				</div>
+			</section>
+
+			<h4 class="ttt-jg-text">..Or join game</h4>
+			
+			<!-- Join game input group -->
+			<div class="ttt-join-input input-group">
+				<input type="text" class="form-control ttt-join-game-inp" id="ttt-game-id" placeholder="Enter game id:">
+				<span class="input-group-btn">
+					<button id="ttt-join-btn" class="btn btn-success" type="button" >Join</button>
+				</span>
+			</div><!-- /input-group -->
+			<!-- List of all open games -->
+			<div id="ttt-open-games-wrapper" class="ttt-box-wrapper"> </div>
+		</section>
+		<!-- END Out of game wrapper -->
+
+		<!-- START In game wrapper -->
+		<section class="ttt-in-game">
+			<div class="ttt-in-game-container">
+				<button id="ttt-exit-game" class="btn btn-danger btn-sm pull-left">Exit Game</button>
+				<button id="ttt-new-game" class="btn btn-success btn-sm pull-left">New Game</button>
+				<div style="clear:both"></div>
+				<div id="ttt-game-wrapper"></div>
+				<div id="ttt-status-text"></div>
+				<div id="ttt-chat-wrapper"></div>
+			</div>
+		</section>
+		<!-- END In game wrapper -->
+	</div>
+
+<script src="js/ttt.min.js"></script>
+	
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+		var $newGameBtn = document.getElementById('ttt-new-game-btn'),
+			$gameSizeDd = document.getElementById('ttt-game-size'),
+			$startGameBtn = document.getElementById('ttt-start-game-btn'),
+			$joinGameBtn = document.getElementById('ttt-join-btn'),
+			$winStreakDd = document.getElementById('ttt-win-streak');
+
+		//user defined functions that will be called after selected events occurred in the code
+		ttt.registerCallbacks = {
+			win: winHandler,
+			draw: drawHandler,
+			lose: loseHandler
+		}
+		
+		//Only for debugging purpose. Highly recommended to leave it disabled. 
+		ttt.enableLogMsg(true);
+		
+		//Initialize the game, should be done only once
+		ttt.init();
+
+		//New game slider, show hide game options
+		$newGameBtn.onclick = function () { 
+			var $gameOptions = document.getElementById('ttt-start-game-options'),
+				$caret = document.querySelector('#ttt-new-game-btn > .caret');
+				
+			//show hide with css animation
+			if($gameOptions.className.indexOf('closed') !== -1) {
+				$gameOptions.className = $gameOptions.className.replace('closed', '');
+			} else {
+				$gameOptions.className += ' closed';
+			}
+
+			//change caret direction
+			if($caret.className.indexOf('up') !== -1) {
+				$caret.className = $caret.className.replace('up', '');
+			} else {
+				$caret.className += ' up';
+			}
+
+			//$caret.className = caretClass;
+		};
+
+		//Start new game, and pass the selected user values to the game
+		$startGameBtn.onclick = function () { 
+			var $slectedGame = document.querySelector('input[name="gameMode"]:checked'), 
+				gameMode = $slectedGame.value,
+				gameType = $slectedGame.getAttribute('data-game-type'), //public or private
+				boardSize = $gameSizeDd.options[$gameSizeDd.selectedIndex].value,
+				winStreak = $winStreakDd.options[$winStreakDd.selectedIndex].value;
+
+			ttt.newGame({
+				gameMode: gameMode,
+				gameAction: 'start',
+				gameType: gameType,
+				boardSize: boardSize,
+				winStreak: winStreak,
+			});
+		};
+
+		//join already started game
+		$joinGameBtn.onclick = function () { 
+			var gameId = document.getElementById("ttt-game-id").value;
+
+			ttt.newGame({
+				gameMode: 'vs-player',
+				gameAction: 'join',
+				gameId: gameId
+			});
+		};
+
+		//Listen for a change in board size in order to update win streak drop-down accordingly
+		$gameSizeDd.addEventListener('change',function(e) {
+			var boardSize = $gameSizeDd.options[$gameSizeDd.selectedIndex].value
+				optionValuse = '';
+
+			if(boardSize > 3) {
+				$winStreakDd.disabled = false;
+				for (var i = 4; i <= boardSize; i++ ) {
+					optionValuse += '<option value="' + i + '">' + i + '</option>';
+				}
+
+			} else {
+				$winStreakDd.disabled = true;
+				optionValuse = '<option value="3"> 3 </option>';
+			}
+
+			$winStreakDd.innerHTML = optionValuse;
+		});
+
+		/**
+		 * This functions are just for demonstration purpose
+		 * In case you want to use all or some of this callBack functions
+		 * It's highly recommended that you move them from global scope.   
+		 */
+		function winHandler (player) {
+			var scores = ttt.getScores();
+			console.log(scores);
+			console.log("My win handler, take that!");			
+			console.log("Player " + player + " wins!");			
+		}
+
+		function drawHandler () {
+			var scores = ttt.getScores();
+			console.log(scores);
+			console.log("My draw handler, take that!");			
+		}
+
+		function loseHandler () {
+			var scores = ttt.getScores();
+			console.log(scores);
+			console.log("My lose handler, take that!");			
+			console.log("Player " + player + " wins!");	
+		}
+
+	</script>
+
+</body>
+</html>

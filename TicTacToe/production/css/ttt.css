@@ -1,0 +1,167 @@
+#ttt-logo {
+	margin: 20px auto;
+	display: block;
+}
+
+.ttt-container {
+	padding: 20px;
+}
+
+.ttt-in-game {
+	display: none;
+}
+
+.ttt-box {
+	max-width: 450px;
+	min-width: 250px;
+	margin: 10px auto;
+	padding: 20px;
+	background-color: #f7f7f9;
+	border: 1px solid #e1e1e8;
+	border-radius: 4px;
+}
+
+.ttt-in-game-container {
+	max-width: 400px;
+	min-width: 250px;
+	width: 100%;
+	margin: 0 auto;
+}
+
+#ttt-game-wrapper {
+	width: 100%;
+	background-color: #E6E6E6;
+	margin: 15px 0;
+}
+
+#ttt-game-wrapper > canvas {
+	border: 1px solid #BFBFBF;
+	float: left;
+	box-sizing: border-box;
+	width: auto;
+	height: auto;
+}
+
+#ttt-game-wrapper > canvas.ttt-win {
+	background-color: #A6E22C;
+}
+
+#ttt-game-wrapper > canvas.ttt-lose {
+	background-color: #F8CB9C;
+}
+
+#ttt-status-text {
+	text-align: center;
+}
+
+#ttt-status-text .alert {
+	display: inline-block;
+	padding: 10px 25px;
+}
+
+.ttt-box-wrapper {
+	background: white;
+	padding: 15px;
+	border-bottom: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+}
+
+#ttt-join-btn {
+	border-bottom-right-radius: 0;
+	padding-bottom: 5px;
+}
+
+.ttt-join-game-inp {
+	border-bottom-left-radius: 0;
+}
+
+#ttt-new-game-btn {
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+#ttt-new-game {
+	margin-left: 10px;
+}
+
+.caret.up {
+	border-bottom: 4px solid;
+	border-top: none;
+}
+
+#ttt-start-game-btn {
+	border-radius: 0;
+	margin-top: 5px;
+}
+
+.ttt-join-game-wrapper {
+	width: 300px;
+}
+
+.ttt-jg-text {
+	margin-top: 20px;
+	margin-left: 10px;
+}
+
+#ttt-start-game-options {
+	padding: 0;
+	padding-top: 15px;
+}
+
+#ttt-start-game-options .radio, #ttt-start-game-options .radio-inline {
+	margin-left: 15px;
+}
+
+.ttt-container select {
+	width: 80%;
+	margin: 0 0 15px 10px;
+}
+
+.ttt-no-games, .ttt-open-games-header {
+	text-align: center;
+	font-weight: bold;
+	color: #444;
+}
+
+.ttt-no-games {
+	margin: 0;
+}
+
+.ttt-open-game {
+	cursor: pointer;
+	border-top: 1px solid #ccc;
+	margin: 0;
+	padding: 10px;
+}
+
+.ttt-game-size {
+	float: right;
+}
+
+#ttt-open-games-wrapper {
+	max-height: 230px;
+	overflow: auto;
+}
+
+/*************************
+Animations
+*************************/
+.slider {
+	overflow-y: hidden;
+	max-height: 500px; /* approximate max height */
+
+	transition-property: all;
+	transition-duration: .7s;
+	transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+}
+
+.slider.closed {
+	max-height: 0!important;
+	overflow: hidden!important;
+	padding: 0!important;
+	margin: 0!important;
+	border: none!important;
+}

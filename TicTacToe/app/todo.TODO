@@ -1,0 +1,16 @@
+ ☐ FIX! when you start single game and then start multilayer game - single player game is shown at the screen
+ ☐ Show score tables in the game 
+ ☐ Remove bootstrap classes from the resources and add it on game initialization (should not be part of core functionality)
+ ☐ Add responsiveness to the story
+ ☐ Add private chat between players while playing 
+ ☐ Add public lobby chat 
+ ✔ Move all html related tasks in separate file @done (13-12-11 14:32)
+ ✔ Move all strings from code to be placed inside resources and only there (id and everything) @done (13-12-11 11:31)
+ ✔ show wining streak together with board size in the game list @done (13-12-11 11:04)
+ ✔ Fix the logic - check line should accept object and then return win fields without the need to recreate them @done (13-12-11 10:22)
+ ✔ Board size of opponent is not good in multilayer mode @done (13-12-10 23:56)
+ ✔ In the list of the games size is undefined fix it and also change it to be s:6 w:4 @done (13-12-10 23:32)
+ ✔ Add options that game can be started as private or public @done (13-12-10 17:05)
+ ✔ List all open games(socket) @done (13-12-10 16:17)
+ ✔ clean inactiv games from games array @done (13-12-10 16:17)
+ ✔ on the new multi game assignee player random @done (13-12-10 16:17)

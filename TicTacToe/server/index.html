@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>socket</title>
+</head>
+<body>
+<p>socket test</p>
+<input id="input-msg" type="text"></input>
+<button id="start-game" style="dispplay:none;">start</button>
+<button id="submit-msg">join</button>
+
+<p>Server responses</p>
+<div id="response-wrapper">
+	
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io.connect('http://localhost:99');
+  socket.on('news', function (data) {
+    console.log(data);
+  });
+
+  socket.on('connect', function () {
+      console.log(this.socket.sessionid);
+  });
+
+  $("#start-game").on('click', function () {
+ 		socket.emit('start-game');	
+  });
+
+  socket.on("game-started", function (id){
+  	$("#response-wrapper").html("Game is started, join with this id: " + id);
+  });
+
+  $("#submit-msg").on('click', function (){
+  	console.log("Join Game");
+  	socket.emit('join-game', $("#input-msg").val());
+  });
+
+  socket.on("game-joined", function (id){
+  	$("#response-wrapper").html("We have join the game with id: " + id);
+  });
+
+  socket.on("game-is-closed", function (id){
+  	$("#response-wrapper").html("This game is closed!");
+  });
+
+  socket.on("game-dont-exist", function (id){
+  	$("#response-wrapper").html("Game doesn't exist");
+  });
+
+
+  socket.on("opointment-id", function (id){
+  	$("#response-wrapper").append("Oppointemnt join the game with id: " + id);
+  });
+
+
+  socket.on('msg', function (msg) {
+    $("#response-wrapper").append("<p>"+msg+"</p>");
+  });
+  	
+</script>
+</body>
+</html>
