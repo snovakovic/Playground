@@ -313,6 +313,3 @@
 	}
 
 })();
-
-var snake = new Snake();
-snake.newGame();

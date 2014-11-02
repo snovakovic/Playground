@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Game Of Life</title>
+    <link href="gof.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <h3>Conway's Game of Life</h3>
+        <div id="gofWrapper">
+        </div>
+        <div id="gameControlles">
+            <button onclick="gof.start()">New Game</button>
+        </div>
+    </div>
+    <script src="gof.js"></script>
+    <script>
+        var gof = new GameOfLife();
+        gof.newGame();
+    </script>
+</body>
+
+</html>

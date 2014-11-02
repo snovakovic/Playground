@@ -1,20 +1,24 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>snake</title>
+    <title>Snake</title>
     <link href="snake.css" rel="stylesheet" />
 </head>
-    <body>
-        <div class="container">
-            <p>Snake</p>
-            <div id="snakeWrapper">
-            </div>
-            <div id="gameControlles">
-                <button onclick="snake.newGame()">New Game</button>
-            </div>
+<body>
+    <div class="container">
+        <h3>Snake</h3>
+        <div id="snakeWrapper">
         </div>
-    </body>
+        <div id="gameControlles">
+            <button onclick="snake.newGame()">New Game</button>
+        </div>
+    </div>
+    <script src="snake.js"></script>
+    <script>
+        var snake = new Snake();
+        snake.newGame();
+    </script>
+</body>
 
-<script src="snake.js"></script>
 
 </html>
