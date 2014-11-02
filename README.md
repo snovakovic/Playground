@@ -3,7 +3,8 @@ Playground
 
 A 1-2 day hobby projects. 
 
-Projects included: 
+Projects included:
+
   1) Tic-Tac-Toe : HTML(Canvas)/ JavaScript tic-tac-toe game.
                   Or kind of tic tac toe game, as board size and wining strike is configurable. 
                   Game support multiplayer by using socket.io and node server.
