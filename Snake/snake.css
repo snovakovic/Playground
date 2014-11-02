@@ -1,0 +1,37 @@
+﻿.container {
+	margin: 50px auto;
+	width: 450px;
+}
+
+#gameControlles {
+	margin: 15px auto;
+	width: 83px;
+}
+
+#snakeWrapper {
+	width: 400px;
+	height: 400px;
+	border: 25px double;
+	color: darkolivegreen;
+}
+
+#snakeWrapper > div {
+	float: left;
+	/*border: 1px solid;*/
+	box-sizing: border-box;
+	background-color: aliceblue;
+}
+
+#snakeWrapper > .snake {
+	background-color: cadetblue; 
+	border-radius: 40%;
+}
+
+#snakeWrapper > .obstacle {
+	background-color: darkolivegreen; 
+}
+
+#snakeWrapper > .food {
+	background-color: greenyellow; 
+	border-radius: 40%;
+}
