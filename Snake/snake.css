@@ -13,6 +13,7 @@
 	height: 400px;
 	border: 25px double;
 	color: darkolivegreen;
+	position: relative;
 }
 
 #snakeWrapper > div {
@@ -34,4 +35,11 @@
 #snakeWrapper > .food {
 	background-color: greenyellow; 
 	border-radius: 40%;
+}
+
+#snakeWrapper > #score {
+	position: absolute;
+	bottom: 0;
+	left: 5px;
+	background: none;
 }

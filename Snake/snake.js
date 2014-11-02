@@ -3,10 +3,11 @@
 	var size,
 		ticker,
 		cssStyle,
+		score,
 		speed,
-		direction,
+		//direction,
 		snake = [],
-		food = [], //Holds all foods in the game and duration of each food
+		directionQueue = [],
 		gameWrapper, //html wrapper
 		game = [];
 
@@ -30,22 +31,26 @@
 		e = e || window.event;
 		switch (e.which || e.keyCode) {
 			case 37: // left
-				direction = direction != "right" ? "left" : direction; //snake can't go backward
+				if (directionQueue[directionQueue.length - 1] != "right") directionQueue.push("left");
+				//direction = direction != "right" ? "left" : direction; //snake can't go backward
 				onKeybordEvent(e);
 				break;
 
 			case 38: // up
-				direction = direction != "down" ? "up" : direction;
+				if (directionQueue[directionQueue.length - 1] != "down") directionQueue.push("up");
+				//direction = direction != "down" ? "up" : direction;
 				onKeybordEvent(e);
 				break;
 
 			case 39: // right
-				direction = direction != "left" ? "right" : direction;
+				if (directionQueue[directionQueue.length - 1] != "left") directionQueue.push("right");
+				//direction = direction != "left" ? "right" : direction;
 				onKeybordEvent(e);
 				break;
 
 			case 40: // down
-				direction = direction != "up" ? "down" : direction;
+				if (directionQueue[directionQueue.length - 1] != "up") directionQueue.push("down");
+				//direction = direction != "up" ? "down" : direction;
 				onKeybordEvent(e);
 				break;
 
@@ -63,9 +68,11 @@
 	_.prototype = {
 		newGame: function () {
 
-			direction = "right";
+			//direction = "right";
+			directionQueue.push("right");
 			snake = [];
 			game = [];
+			score = 0;
 
 			//Get two dimensional array filled with 0
 			for (var i = 0; i < size; i++) {
@@ -101,6 +108,8 @@
 		//snake[0] is the head of the snake
 		var oldX = snake[0].x;
 		var oldY = snake[0].y;
+
+		var direction = directionQueue.length > 1 ? directionQueue.shift() : directionQueue[0];
 
 		//Move the head 
 		switch (direction) {
@@ -146,14 +155,15 @@
 				oldY = tempY;
 
 			}
-
+			
 			//remove the tail in cease that the snake didn't eat the food
 			if (game[snake[0].y][snake[0].x] !== 2) {
 				game[oldY][oldX] = 0;
 			}
 			//grow snake
 			else {
-				snake.push({ y: oldY , x: oldX });
+				snake.push({ y: oldY, x: oldX });
+				score++; //score is displayed in the screen
 			}
 
 			//move the head
@@ -284,6 +294,9 @@
 			}
 
 		}
+
+		//insert score
+		snakeHtml += '<div id="score">score: ' + score + '</div>';
 
 		gameWrapper.innerHTML = snakeHtml;
 
