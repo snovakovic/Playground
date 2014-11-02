@@ -11,4 +11,4 @@ Projects included:
                   
   2) Number puzzle game : Order the number in the board to win the game. Size of the board is configurable.
   
-  3) Snake: Classic snake game using only plan HTML and JavaScript - no canvas included. 
+  3) Snake: Classic snake game using only HTML and JavaScript - no canvas included. 
