@@ -1,11 +1,16 @@
 ﻿.container {
 	width: 800px;
-	margin: 20px auto;
+	margin: 50px auto;
 	text-align: center;
+	font-family: 'Jura', sans-serif;
 }
 
-ul {
-	list-style: none;
+.title, a {
+	color: #FF6633;
+}
+
+.container, .title > span {
+	color: gray;
 }
 
 .title > span {
@@ -16,6 +21,7 @@ ul {
 
 
 ul {
+	list-style: none;
 	padding: 0;
 }
 
