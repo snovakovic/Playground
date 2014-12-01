@@ -1,0 +1,28 @@
+﻿.container {
+	width: 800px;
+	margin: 20px auto;
+	text-align: center;
+}
+
+ul {
+	list-style: none;
+}
+
+.title > span {
+	display: block;
+	font-size: 0.9em;
+	font-style: italic
+}
+
+
+ul {
+	padding: 0;
+}
+
+ul>li {
+	margin: 25px 0;
+}
+
+ul>li>p {
+	margin: 5px 0;
+}
