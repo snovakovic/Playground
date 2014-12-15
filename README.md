@@ -3,6 +3,8 @@ Playground
 
 A 1-2 day hobby projects. 
 
+DEMO: http://is.gd/PlayGround
+
 Projects included:
 
   1) Tic-Tac-Toe : HTML(Canvas)/ JavaScript tic-tac-toe game.

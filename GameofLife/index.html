@@ -7,16 +7,30 @@
 <body>
     <div class="container">
         <h3>Conway's Game of Life</h3>
-        <div id="gofWrapper">
-        </div>
+        <div id="gofWrapper"></div>
+
         <div id="gameControlles">
-            <button onclick="gof.start()">New Game</button>
+            <button id="start-game" onclick="gof.start()">Start Game</button>
+            <button id="new-game" onclick="gof.newGame()">New Game</button>
         </div>
+        <p id="game-info"> Click on map to set up game. After the game is set up start the game. </p>
     </div>
     <script src="gof.js"></script>
     <script>
-        var gof = new GameOfLife();
+        var gof = new GameOfLife(onNewGame, onGameStart);
         gof.newGame();
+
+        function onGameStart() {
+            document.getElementById("start-game").style.display = "none";
+            document.getElementById("game-info").style.display = "none";
+            document.getElementById("new-game").style.display = "block";
+        };
+
+        function onNewGame() {
+            document.getElementById("start-game").style.display = "block";
+            document.getElementById("game-info").style.display = "block";
+            document.getElementById("new-game").style.display = "none";
+        };
     </script>
 </body>
 

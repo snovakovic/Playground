@@ -1,25 +1,32 @@
 ﻿(function () {
 
 	var size,
-		ticker,
-		cssStyle,
-		speed,
-		gameWrapper, //html wrapper
-		game = [];
+		 gameIsOn,
+		 ticker,
+		 cssStyle,
+		 speed,
+		 gameWrapper, //html wrapper
+		 startGameCallback,
+		 newGameCallback,
+		 game = [];
 
-	var _ = self.GameOfLife = function (_size, _speed) {
-		size = _size || 40;
-		speed = _speed || 500;
+	var _ = self.GameOfLife = function (_newGameCallback, _startGameCallback) {
+		size = 40;
+		speed = 500;
 		var cssSize = 100 / size + '%';
 		cssStyle = "width:" + cssSize + "; height:" + cssSize;
 		gameWrapper = document.getElementById("gofWrapper");
 		console.log(gameWrapper);
+
+		startGameCallback = _startGameCallback || {};
+		newGameCallback = _newGameCallback || {};
 	};
 
 
 	_.prototype = {
 		newGame: function () {
-
+			gameIsOn = false;
+			newGameCallback();
 			//Get two dimensional array filled with 0
 			for (var i = 0; i < size; i++) {
 				game[i] = getFilledArray(0, size);
@@ -58,7 +65,9 @@
 
 		},
 
-		start: function() {
+		start: function () {
+			gameIsOn = true;
+			startGameCallback();
 			play();
 		},
 
@@ -77,6 +86,9 @@
 		Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
 	*/
 	function play() {
+
+		if (!gameIsOn)
+			return;
 
 		var kill = [], //index of cells to kill
 			raise = []; //index where new cell will be born
