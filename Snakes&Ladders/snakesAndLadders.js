@@ -1,98 +1,174 @@
-var snakesAndLadders = (function($) {
-	var players = [];
-		currentPlayer = 0;
+var snakesAndLadders = (function () {
+	var players = [],
+		currentPlayer = 0,
 		moveIsInProgress = false,
 		gameIsOn = false;
- 
-    
-    //throw dice event listener
-    $("#throw-dices").click( function() {
-		throwDices();
+
+
+	//throw dice event listener
+	document.getElementById("throw-dices").addEventListener('click', function () {
+		//if game is not active or if current move is in progress ignore throw dice click
+		if (gameIsOn && !moveIsInProgress) {
+			throwDices();
+		}
 	});
 
-	var	throwDices = function() {
-		if(!gameIsOn || moveIsInProgress)
-			return;
+	//new game event listener
+	document.getElementById("new-game").addEventListener('click', function() {
+		snakesAndLadders.startGame();
+	});
 
+	//Main application logic happens after user click throw dice
+	var throwDices = function () {
+
+		//disable throw dices button
+		document.getElementById("throw-dices").disabled = true;
+
+		//calculate two random numbers between 1-6 representing two dices
 		var rand1 = Math.floor((Math.random() * 6) + 1);
 		var rand2 = Math.floor((Math.random() * 6) + 1);
-		var playerPlayed = currentPlayer;
-		var currentPlayerPosition = players[playerPlayed].position;
-		var positionUpdated = false;
-		$("#dice1").html(rand1);
-		$("#dice2").html(rand2);
 
-		players[playerPlayed].position = players[playerPlayed].position + rand1 + rand2;
-		if(players[playerPlayed].position > 100) {
-			players[playerPlayed].position = 100;
+		//get the current player position on the board before updating position
+		//this is needed because move will be animated filed by field. (It own happen instantly form n field to x field)
+		var currentPlayerPosition = players[currentPlayer].position;
+
+		//represent dice thrown in UI
+		updateDiceUi(players[currentPlayer], rand1, rand2);
+
+		//calculate user position after the thrown, if it's grater then 100 set it to 100
+		// we can easily add here game option with bounce back
+		players[currentPlayer].position = players[currentPlayer].position + rand1 + rand2;
+		if (players[currentPlayer].position > 100) {
+			players[currentPlayer].position = 100;
 		}
 
-		movePlayer(players[playerPlayed], currentPlayerPosition, function () {
-			//chack if position is ladder or snake
+		//Move the player to the new position
+		movePlayer(players[currentPlayer], currentPlayerPosition, function () {
+			//this is callback function which is called after move is done. 
+			//It's because we are move field by filed with timeout in order for user to see animation on screen
+
+			//after move that has been thrown has updated on UI check if it lends on ladders or snake
+			//If it does update to location that snake or ladders are pointing
+			//this move will be done instantly without animation
+			var positionUpdated = false;
+
+			//Check if current position is snake head
 			for (var i = 0; i < snakeAndLaddersConfig.snakes.length; i++) {
-		        if(snakeAndLaddersConfig.snakes[i].from == players[playerPlayed].position) {
-		        	players[playerPlayed].position = snakeAndLaddersConfig.snakes[i].to;
-		        	positionUpdated = true;
-		        	break;
-		        }
-		    }
-
-		    if(!positionUpdated) {
-		    	for (var i = 0; i < snakeAndLaddersConfig.ladders.length; i++) {
-			        if(snakeAndLaddersConfig.ladders[i].from == players[playerPlayed].position) {
-			        	players[playerPlayed].position = snakeAndLaddersConfig.ladders[i].to;
-			        	positionUpdated = true;
-			        	break;
-			        }
-		   		}
-		    }
-
-		    //on ladder or snake move player instantly
-		    if(positionUpdated) {
-				movePlayer(players[playerPlayed], players[playerPlayed].position -1);
-		    }
-
-
-			if( players[playerPlayed].position == 100 ) {
-				onWin(players[playerPlayed]);
+				if (snakeAndLaddersConfig.snakes[i].from == players[currentPlayer].position) {
+					players[currentPlayer].position = snakeAndLaddersConfig.snakes[i].to;
+					positionUpdated = true;
+					break;
+				}
 			}
 
-			//if it's double 6 don't change player in any other case change pl
-			if (rand1 != 6 || rand2 != 6) {
-				if(currentPlayer === 0)
-					currentPlayer = 1;
-				else
-					currentPlayer = 0;
+			//in case if it is not snake head check if it is bottom of ladders
+			if (!positionUpdated) {
+				for (var i = 0; i < snakeAndLaddersConfig.ladders.length; i++) {
+					if (snakeAndLaddersConfig.ladders[i].from == players[currentPlayer].position) {
+						players[currentPlayer].position = snakeAndLaddersConfig.ladders[i].to;
+						positionUpdated = true;
+						break;
+					}
+				}
 			}
-			
+
+			//on ladder or snake move player instantly
+			// we pass current position to be the new position - 1 which will result in instantly update of position in UI
+			if (positionUpdated) {
+				movePlayer(players[currentPlayer], players[currentPlayer].position - 1);
+			}
+
+			//Lastly check if player has win the game
+			if (players[currentPlayer].position == 100) {
+				onWin(players[currentPlayer]);
+			}
+
+			//change player after move is finished
+			currentPlayer = currentPlayer === 0 ? 1 : 0;
+
+			//enable throw dices button
+			document.getElementById("throw-dices").disabled = false;
+
+			showCurrentPlayerTurn();
+
+
 		});
 
 
 	}
 
-	//move is done one filed by the time with timeout to create anymation effect
-	var movePlayer = function(player, currentPosition, onMoveFinish) {
-		moveIsInProgress = true;
-		var newPosition = currentPosition + 1;
+	//Update UI after dice throw to represent to user what has been thrown
+	var updateDiceUi = function(player, dice1, dice2) {
+		//show nice representation of thrown dices
+		//this will be done by appending class to element which is use for styling
+		//e.g if 6 is thrown we will append class six to dice element
+		document.getElementById("dice1").className = "dice " + getDiceClassFromNumber(dice1);
+		document.getElementById("dice2").className = "dice " + getDiceClassFromNumber(dice2);
 
-		//nothing to update
-		if(newPosition > player.position ) {
+		//show text summarizing what have been thrown
+		//document.getElementById("game-info").innerHTML = "<b>" + player.name + "</b> has thrown " + (dice1 + dice2);
+	}
+
+	//update UI to represent who is on the move
+	var showCurrentPlayerTurn = function() {
+		document.getElementById("current-player").innerHTML = players[currentPlayer].name + " turn.";
+	}
+
+
+	var getDiceClassFromNumber = function (val) {
+		switch (val) {
+			case 1:
+				return "one";
+			case 2:
+				return "two";
+			case 3:
+				return "three";
+			case 4:
+				return "four";
+			case 5:
+				return "five";
+			case 6:
+				return "six";
+			default:
+				return "";
+		}
+	}
+
+	//move is done one filed by the time with timeout to create animation effect
+	var movePlayer = function (player, currentPosition, onMoveFinish) {
+		//indicate that current move is in progress which will disable any further dice throw until current move is done 
+		moveIsInProgress = true;
+		var newPosition = currentPosition + 1; // move is done 1 field by the time
+
+		//nothing to update, exit form recursion
+		if (newPosition > player.position) {
 			moveIsInProgress = false;
-			if(onMoveFinish)
+
+			//call on move finish callback so that any waiting code can continue with execution
+			if (onMoveFinish)
 				onMoveFinish();
 		}
 		else {
-			var $player = $('#player' + player.id);
-			var $boardField = $("[data-field-number='"+ newPosition +"']");
+			//update player position on board
+			var playerElem = document.getElementById("player" + player.id);
+			var boardFieldElem = document.getElementById("field" + newPosition);
 
-			//first move there is no player on the board
-			if( !$player.length ) {
-				$boardField.append("<i class='player' id='player"+player.id+"'></i>")
+			//first move there is no player on the board, append player to board
+			if (!playerElem) {
+				boardFieldElem.innerHTML += "<i class='player' id='player" + player.id + "'></i>";
 			} else {
-				$player.appendTo($boardField);
+				//move player form one filed on board to another
+				var playerHtml = playerElem.outerHTML;
+
+				//remove player form current field
+				playerElem.parentNode.removeChild(playerElem);
+
+				//append player to new field
+				boardFieldElem.innerHTML += playerHtml;
 			}
 
-			setTimeout( function () {
+			//wait some time to create animation effect and call itself to process next move
+			setTimeout(function () {
 				movePlayer(player, newPosition, onMoveFinish);
 			}, snakeAndLaddersConfig.moveSpeed);
 		}
@@ -101,15 +177,17 @@ var snakesAndLadders = (function($) {
 
 	}
 
-	var onWin = function(player) {
+	var onWin = function (player) {
 		gameIsOn = false;
-		$("#game-info").html(player.name + " has win the game!");
+		document.getElementById("game-info").innerHTML = "<h3>" + player.name + " wins!!!!</h3>";
+		document.getElementById("throw-dices").disabled = true;
 	}
 
-	
+
 	return {
-		startGame: function() {
-			players =	[{
+		startGame: function () {
+			//set initial players value on game start. Players positions are at 0
+			players = [{
 				id: 0,
 				name: 'First player',
 				position: 0
@@ -123,23 +201,33 @@ var snakesAndLadders = (function($) {
 			currentPlayer = 0;
 			gameIsOn = true;
 
+			//generate board overlay in where all action will happen
+			//each field will be indicated with the id = field{number-of-field} eg id='field33'
+
 			var htmlBoardOverlay = '';
 			for (var i = 100; i > 0; i--) {
-				htmlBoardOverlay += "<div class='board-field' data-field-number='" + i + "'></div>"
+				htmlBoardOverlay += "<div class='board-field' id='field" + i + "'></div>";
 			};
-	
-			$("#board").html(htmlBoardOverlay);
+
+			document.getElementById("board").innerHTML = htmlBoardOverlay;
+
+			//enable throw dices button
+			document.getElementById("throw-dices").disabled = false;
+
+			showCurrentPlayerTurn();
 		},
 	}
 
 
 
-})(jQuery);
+})();
 
 //game configuration
 var snakeAndLaddersConfig = {
 	moveSpeed: 200,
+
 	//snake configuration on the board
+	// this reflect snakes on the board ( on board image)
 	snakes: [
 		{
 			from: 99,
@@ -172,6 +260,7 @@ var snakeAndLaddersConfig = {
 	],
 
 	//ladders configuration on the board
+	//this reflects ladders on the board (on board image)
 	ladders: [
 		{
 			from: 3,

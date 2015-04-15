@@ -5,24 +5,39 @@
     <link href="game-style.css" rel="stylesheet" />
 </head>
 <body>
-	<div class="game-wrapper">
-		<div id="board">
-			
-		</div>
+    <div class="game-wrapper">
 
-		<div class="game-controlls">
-			<button id="throw-dices"> Throw dices </button>
-			<div id="dice1" class="dice"> </div>
-			<div id="dice2" class="dice"> </div>
-			<div id="game-info"></div>
-		</div>
-	</div>
+        <div id="board">
+            <!-- board is having background image of the snake and ladders game-->
+            <!-- Hidden grid(game fields) overlay will be added form js -->
+        </div>
 
-	<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-	<script src="snakesAndLadders.js"></script>
-	<script type="text/javascript">
-	    snakesAndLadders.startGame();
-	</script>
+        <div id="game-controlls">
+            <div>
+                <span id="current-player"> &nbsp; </span>
+                <button id="new-game"> NEW GAME </button>
+                <div style="clear:both;"></div>
+            </div>
 
+            <button id="throw-dices" disabled> THROW </button>
+
+            <!-- Show value of dices after throw -->
+            <div id="dice1" class="dice"> <span class="dot"></span> </div>
+            <div id="dice2" class="dice"> <span class="dot"></span>  </div>
+
+            <div id="game-info">
+                <!-- Game information's as whose turn is and who win the game will be show here -->
+            </div>
+            
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+
+    <!-- Load jQuery and game js -->
+    <script src="snakesAndLadders.js"></script>
+    <script>
+        //automatically start game after page is loaded
+        snakesAndLadders.startGame();
+    </script>
 </body>
 </html>

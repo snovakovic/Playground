@@ -7,7 +7,7 @@
 	position: relative;
 	width: 600px;
 	height: 602px;
-	margin-bottom: 15px;
+	margin-bottom: 10px;
 	background-image: url('board.jpg');
 	background-repeat: no-repeat;
 	background-position: center center;
@@ -43,9 +43,133 @@
 	background: red;
 }
 
+#throw-dices,
+#game-info,
 .dice {
-	padding: 5px 10px;
-	margin-left: 5px;
-	display: inline-block;
-	border: 1px solid gray;
+	display: block;
+	float: left;
 }
+
+
+#game-info {
+	width: 350px;
+	margin-left: 25px;
+	line-height: 55px;
+}
+
+#throw-dices {
+   padding: 10px 5px;
+	margin-top: 12px;
+}
+
+#new-game {
+	float: right;
+	margin-right: 10px;
+	padding: 5px;
+}
+
+button {
+	cursor: pointer;
+}
+
+h3 {
+	margin: 0;
+   color: crimson;
+}
+
+#current-player {
+	margin: 15px 10px 5px 10px;
+	color: burlywood;
+}
+
+#game-controlls {
+	margin-bottom: 20px;
+}
+
+
+
+/* DICE Style taken form http://sampsonblog.com/289/of-dice-dabblet-and-css */
+
+.dice {
+	border-top: 1px solid #f1f1f1;
+	width: 50px; height: 50px;
+	margin-left: 15px;
+	border-radius: 10px;
+	position: relative;
+	font-size: 6px;
+	display: block;
+	box-shadow: 0px 5px 0 #CCC, 0 6px 3px #444, 0 10px 5px #999;
+	background-image: linear-gradicent(top, #fefefe, #f1f1f1 80%)
+}
+.dot {
+	width: 20%; 
+	height: 20%; 
+	left: 50%; 
+	top: 50%;
+	margin: -10%;
+	background: #345;
+	border-radius: 50%;
+	display: block;
+	position: absolute;
+}
+
+
+.dice.one .dot { 
+	box-shadow: 0 .2em 0 #FFF 
+}
+
+.dice.two .dot { 
+	background: transparent;
+	box-shadow: -2.3em -2.3em 0 #345, 
+		     2.3em  2.3em 0 #345, 
+		    -2.3em -2.3em 0 #FFF, 
+		     2.3em  2.4em 0 #FFF 
+}
+
+.dice.three .dot { 
+	box-shadow: -2.3em -2.3em 0 #345, 
+		     2.3em  2.3em 0 #345, 
+		    -2.3em -2.3em 0 #FFF, 
+		     2.3em  2.4em 0 #FFF, 
+		         0   .2em 0 #FFF 
+}
+
+.dice.four .dot { 
+	background: transparent;
+        box-shadow: -2.3em -2.3em 0 #345, 
+        	     2.3em  2.3em 0 #345, 
+        	    -2.3em  2.3em 0 #345, 
+        	     2.3em -2.3em 0 #345, 
+        	    -2.3em -2.3em 0 #FFF, 
+        	     2.3em  2.4em 0 #FFF, 
+        	    -2.3em  2.4em 0 #FFF, 
+        	     2.3em -2.3em 0 #FFF 
+}
+
+.dice.five .dot { 
+	box-shadow: -2.3em -2.3em 0 #345, 
+		     2.3em  2.3em 0 #345, 
+		    -2.3em  2.3em 0 #345, 
+		     2.3em -2.3em 0 #345, 
+		    -2.3em -2.2em 0 #FFF, 
+		     2.3em -2.2em 0 #FFF, 
+		     2.3em  2.4em 0 #FFF, 
+		    -2.3em  2.4em 0 #FFF,
+		         0   .2em 0 #FFF 
+}
+.dice.six .dot {
+	background: transparent;
+	box-shadow: -2.3em -2.3em 0 #345,
+		    -2.3em      0 0 #345,
+		    -2.3em  2.3em 0 #345,
+		     2.3em -2.3em 0 #345,
+		     2.3em      0 0 #345,
+		     2.3em  2.3em 0 #345,
+		    -2.3em -2.1em 0 #FFF,
+		    -2.3em   .2em 0 #FFF,
+		    -2.3em  2.4em 0 #FFF,
+		     2.3em  2.4em 0 #FFF,
+		     2.3em   .2em 0 #FFF,
+		     2.3em -2.1em 0 #FFF
+}
+
