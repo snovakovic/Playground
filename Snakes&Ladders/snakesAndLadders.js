@@ -29,7 +29,8 @@ var snakesAndLadders = (function () {
 		var rand2 = Math.floor((Math.random() * 6) + 1);
 
 		//get the current player position on the board before updating position
-		//this is needed because move will be animated filed by field. (It own happen instantly form n field to x field)
+		//this is needed because move will be animated field by field. so we need to know form whic field are we starting, 
+		//and player position will be updated to new position, before move happens
 		var currentPlayerPosition = players[currentPlayer].position;
 
 		//represent dice thrown in UI
