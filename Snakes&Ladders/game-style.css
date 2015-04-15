@@ -1,12 +1,12 @@
 ﻿.game-wrapper {
-	width: 600px;
+	width: 450px;
 	margin: 25px auto;
 }
 
 #board {
 	position: relative;
-	width: 600px;
-	height: 602px;
+	width: 450px;
+	height: 452px;
 	margin-bottom: 10px;
 	background-image: url('board.jpg');
 	background-repeat: no-repeat;
@@ -52,7 +52,7 @@
 
 
 #game-info {
-	width: 350px;
+	width: 230px;
 	margin-left: 25px;
 	line-height: 55px;
 }
