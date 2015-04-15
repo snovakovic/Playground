@@ -1,0 +1,51 @@
+﻿.game-wrapper {
+	width: 600px;
+	margin: 25px auto;
+}
+
+#board {
+	position: relative;
+	width: 600px;
+	height: 602px;
+	margin-bottom: 15px;
+	background-image: url('board.jpg');
+	background-repeat: no-repeat;
+	background-position: center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+.board-field {
+	width: 10%;
+	height: 10%;
+	float: right;
+	position: relative;
+}
+
+.player {
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -10px;
+	margin-top: -10px;
+}
+
+#player0 {
+	background: blue;
+}
+
+#player1 {
+	background: red;
+}
+
+.dice {
+	padding: 5px 10px;
+	margin-left: 5px;
+	display: inline-block;
+	border: 1px solid gray;
+}
