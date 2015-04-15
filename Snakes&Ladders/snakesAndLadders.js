@@ -21,7 +21,7 @@ var snakesAndLadders = (function () {
 	//Main application logic happens after user click throw dice
 	var throwDices = function () {
 
-		//disable throw dices button
+		//disable throw dices button until move is finished
 		document.getElementById("throw-dices").disabled = true;
 
 		//calculate two random numbers between 1-6 representing two dices
@@ -36,8 +36,8 @@ var snakesAndLadders = (function () {
 		//represent dice thrown in UI
 		updateDiceUi(players[currentPlayer], rand1, rand2);
 
-		//calculate user position after the thrown, if it's grater then 100 set it to 100
-		// we can easily add here game option with bounce back
+		//calculate user position after dice thrown, if it's grater then 100 set it to 100
+		// we can easily add support to bounce logic in here 
 		players[currentPlayer].position = players[currentPlayer].position + rand1 + rand2;
 		if (players[currentPlayer].position > 100) {
 			players[currentPlayer].position = 100;
@@ -45,10 +45,10 @@ var snakesAndLadders = (function () {
 
 		//Move the player to the new position
 		movePlayer(players[currentPlayer], currentPlayerPosition, function () {
-			//this is callback function which is called after move is done. 
-			//It's because we are move field by filed with timeout in order for user to see animation on screen
+			//This is callback function which is called after move is done. 
+			//It's because we are moving field by filed with timeout in order for user to see animation on screen
 
-			//after move that has been thrown has updated on UI check if it lends on ladders or snake
+			//After move that has been updated on UI check if it lends on ladders or snake
 			//If it does update to location that snake or ladders are pointing
 			//this move will be done instantly without animation
 			var positionUpdated = false;
@@ -74,12 +74,13 @@ var snakesAndLadders = (function () {
 			}
 
 			//on ladder or snake move player instantly
-			// we pass current position to be the new position - 1 which will result in instantly update of position in UI
+			// we are passing new position -1 to the move function as current position
+			// this will cause that move happens instantly on the board an not animated as a normal move
 			if (positionUpdated) {
 				movePlayer(players[currentPlayer], players[currentPlayer].position - 1);
 			}
 
-			//Lastly check if player has win the game
+			//check if player has win the game
 			if (players[currentPlayer].position == 100) {
 				onWin(players[currentPlayer]);
 			}
@@ -101,7 +102,7 @@ var snakesAndLadders = (function () {
 	//Update UI after dice throw to represent to user what has been thrown
 	var updateDiceUi = function(player, dice1, dice2) {
 		//show nice representation of thrown dices
-		//this will be done by appending class to element which is use for styling
+		//this will be done by appending class to element each class has unique styling to look like a dice
 		//e.g if 6 is thrown we will append class six to dice element
 		document.getElementById("dice1").className = "dice " + getDiceClassFromNumber(dice1);
 		document.getElementById("dice2").className = "dice " + getDiceClassFromNumber(dice2);
@@ -115,7 +116,7 @@ var snakesAndLadders = (function () {
 		document.getElementById("current-player").innerHTML = players[currentPlayer].name + " turn.";
 	}
 
-
+	//based on random number get the class that represent the look of the dice
 	var getDiceClassFromNumber = function (val) {
 		switch (val) {
 			case 1:
@@ -139,9 +140,11 @@ var snakesAndLadders = (function () {
 	var movePlayer = function (player, currentPosition, onMoveFinish) {
 		//indicate that current move is in progress which will disable any further dice throw until current move is done 
 		moveIsInProgress = true;
-		var newPosition = currentPosition + 1; // move is done 1 field by the time
 
-		//nothing to update, exit form recursion
+		// we are moving player one filed by the time form current position to the position he has thrown. 
+		var newPosition = currentPosition + 1; 
+
+		//Player have arrived to his position, exit form recursion
 		if (newPosition > player.position) {
 			moveIsInProgress = false;
 
@@ -151,10 +154,11 @@ var snakesAndLadders = (function () {
 		}
 		else {
 			//update player position on board
-			var playerElem = document.getElementById("player" + player.id);
+			var playerElem = document.getElementById( "player" + player.id );
 			var boardFieldElem = document.getElementById("field" + newPosition);
 
-			//first move there is no player on the board, append player to board
+			//special case on first move when there is no player on the board, 
+			// add player to board
 			if (!playerElem) {
 				boardFieldElem.innerHTML += "<i class='player' id='player" + player.id + "'></i>";
 			} else {
@@ -168,12 +172,12 @@ var snakesAndLadders = (function () {
 				boardFieldElem.innerHTML += playerHtml;
 			}
 
-			//wait some time to create animation effect and call itself to process next move
+			//wait some time specified in configuration to create animation effect and call itself to process next move
+			//by increasing waiting time piece moving will appear slower on UI
 			setTimeout(function () {
 				movePlayer(player, newPosition, onMoveFinish);
 			}, snakeAndLaddersConfig.moveSpeed);
 		}
-
 
 
 	}
@@ -187,7 +191,7 @@ var snakesAndLadders = (function () {
 
 	return {
 		startGame: function () {
-			//set initial players value on game start. Players positions are at 0
+			//set initial players value on game start. Players positions are set to 0
 			players = [{
 				id: 0,
 				name: 'First player',
@@ -228,7 +232,8 @@ var snakeAndLaddersConfig = {
 	moveSpeed: 200,
 
 	//snake configuration on the board
-	// this reflect snakes on the board ( on board image)
+	// this reflect snakes on the board ( need to be same as on image in order to work correctly)
+	// we can support different images by changing just this configuration
 	snakes: [
 		{
 			from: 99,
