@@ -14,8 +14,10 @@ var snakesAndLadders = (function () {
 	});
 
 	//new game event listener
-	document.getElementById("new-game").addEventListener('click', function() {
-		snakesAndLadders.startGame();
+	document.getElementById("new-game").addEventListener('click', function () {
+		if (!moveIsInProgress) {
+			snakesAndLadders.startGame();
+		}
 	});
 
 	//Main application logic happens after user click throw dice

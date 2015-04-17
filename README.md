@@ -16,3 +16,5 @@ Projects included:
   3) Snake: Classic snake game using only HTML and JavaScript - no canvas included. 
   
   4) Conway's Game of Life : More about game http://en.wikipedia.org/wiki/Conway's_Game_of_Life
+
+  5) Snake and ladders two player dice board game. Be first to 100 to win
