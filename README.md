@@ -3,7 +3,7 @@ Playground
 
 A 1-2 day hobby projects.
 
-DEMO: http://snovakovic-playground.surge.sh/
+DEMO: http://sn-playground.surge.sh/
 
 Projects included:
 
